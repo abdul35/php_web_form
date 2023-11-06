@@ -1,16 +1,43 @@
-const form = document.querySelector(".email");
 const emailInput = document.querySelector('.email');
 const phoneNumber = document.querySelector(".tel");
 const statusSucces = document.querySelector('.status__succes');
 const statusError = document.querySelector(".status__error");
 
-const validateEmail = (email) => {
+const validateEmail = function (email)  {
     return String(email)
         .toLowerCase()
         .match(
             /^(([^<>()[\]\\.,;:\s@"]+(\.[^<>()[\]\\.,;:\s@"]+)*)|.(".+"))@((\[[0-9]{1,3}\.[0-9]{1,3}\.[0-9]{1,3}\.[0-9]{1,3}\])|(([a-zA-Z\-0-9]+\.)+[a-zA-Z]{2,}))$/
         );
 };
+
+const validateNum = function (phone) {
+
+    const re = /^[\d\+][\d\(\)\ -]{4,14}\d$/;
+    const text = 'Номер телефона введен неправильно!'
+    
+    if (!re.test(phone)) {
+        statusError.textContent = text       
+        return false 
+    } 
+    statusError.textContent = ''
+    return true
+}
+
+const sendForm = async function (formData) {
+    const res = await fetch("server.php", {
+        method: "POST",
+        body: formData
+    })
+    console.log(res);
+    if (res.ok) {
+        statusSucces.textContent = "Заявка успешно отправлено"
+        return
+    } else {
+        statusSucces.textContent = "Заявка не отправлено"
+        
+    }
+}
 
 window.addEventListener("DOMContentLoaded", function() {
     [].forEach.call(document.querySelectorAll('.tel'), function(input) {
@@ -51,36 +78,35 @@ window.addEventListener("DOMContentLoaded", function() {
 });
 
 
-form.addEventListener("submit", async (e) => {
+document.forms["myForm"].addEventListener("submit", function (e)  {
+
     e.preventDefault()
-    const elems = e.target.elements
+    let isValid = true;
+    let email = document.forms.myForm?.email.value;
+    // let phone = document.forms.myForm?.phone.value;
+    let name = document.forms.myForm.name.value;
+    console.log(emailInput.value, phoneNumber.value, document.forms.myForm.name.value);
+    if (!emailInput.value || !phoneNumber.value) {
+        isValid = false
+        return
+    }
 
-    const formData = new FormData();
+    if (!validateEmail(emailInput.value)) {
+        isValid = false
+    }
 
-    formData.append("name", elems[0].value)
-    formData.append("email", elems[1].value)
-    formData.append("phone", elems[2].value)
-
-    const res = await fetch("server.php", {
-        method: "POST",
-        body: formData
-    })
+    if (!validateNum(phoneNumber.value)) {
+        isValid = false
+    }
+    if (isValid) {
+        console.log('gg');
+        const formData = new FormData();
+        
+        formData.append("name", name)
+        formData.append("email", emailInput.value)
+        formData.append("phone", phoneNumber.value)
+        
+        sendForm(formData)
+    }
 })
 
-
-emailInput.addEventListener("input", (e) => {
-    validateEmail(e.target.value);
-    const re = /^[\w-\.]+@[\w-]+\.[a-z]{2,4}$/i;
-    const text = 'Адрес электронной почты введен неправильно!'
-})
-
-phoneNumber.addEventListener("focusout", (e) => {
-    const phone = e.target.value;
-    const re = /^[\d\+][\d\(\)\ -]{4,14}\d$/;
-    const text = 'Номер телефона введен неправильно!'
-    
-    if (re.test(phone)) {
-       return statusError.textContent = text       
-    } 
-    statusError.textContent = ''
-})

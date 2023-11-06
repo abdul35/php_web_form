@@ -4,46 +4,53 @@
 <head>
     <meta charset="UTF-8">
     <meta name="viewport" content="width=device-width, initial-scale=1.0">
-    <title>Document</title>
-    <link rel="stylesheet" href="css/style.css">
+    <title>Форма</title>
+    <link rel="stylesheet" href="./css/style.css">
 </head>
+<?php  
 
+ ?>
 <body>
     <section class="container">
-        <form class="form" name="feedback" method="POST">
-            <label class="field-wrap" for="">
+        <form class="form" id="myForm" name="feedback" method="POST">
+            <label class="field-wrap" for="name">
                 <span>
-                    Username
+                    Имя
                 </span>
-                <input class="field name" type="text" name="name">
+                <input class="field name" type="text" id="name" name="name">
             </label>
-            <label class="field-wrap" for="">
+            <label class="field-wrap" for="email">
                 <span>
-                    Email
+                    Эл-Почта
                 </span>
-                <input class="field email error" type="text" name="email">
+                <input class="field email" id="email" type="text" name="email">
             </label>
-            <label class="field-wrap" for="">
+            <label class="field-wrap" for="tel">
                 <span>
-                    Phone number
+                    Номер тел
                 </span>
-                <input class="field tel" name="phoneNumber">
+                <input class="field tel" id="tel" name="phoneNumber">
 
             </label>
 
             <div class="status">
-                <p class="status__succes">Invalid email.</p>
-                <p class="status__error">Invalid phone.</p>
+                <p class="status__succes"></p>
+                <p class="status__error"></p>
             </div>
-            <button class="button-submit" id="button-submit" type="submit">Send</button>
+            <button class="button-submit" id="button-submit" type="submit">Отправить</button>
         </form>
     </section>
 
-    <script src="app.js"></script>
+    <script src="./app.js">
+
+
+    </script>
 </body>
 
 </html>
-<!-- Создать страницу с формой.
+<!-- 
+
+Создать страницу с формой.
 В форме должны быть следующие поля:- имя
 - email
 - телефон
@@ -62,4 +69,6 @@
 телефоном, если есть и заявка уходила в период 5 минут, форму не отправлять!
 
 При успешной проверке - форма должна скрываться, а пользователю должно выводиться сообщение об успешной отправки заявки.
-При неудачной проверке - пользователю должна выводиться ошибка над формой. -->
+При неудачной проверке - пользователю должна выводиться ошибка над формой. 
+
+-->
